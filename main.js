@@ -186,3 +186,71 @@ console.clear();
 
 const res = arr.forEach((val) => console.log(val));
 console.log(res);
+
+// Spread operator
+const obj1 = {
+  prop1: 'test',
+  arr: [1, 2, 3],
+};
+
+const obj2 = {
+  prop2: 'doi',
+};
+
+const obj3 = {
+  ...obj1,
+  prop1: 'dasdasd',
+  ...obj2,
+};
+
+const obj4 = { ...obj1 };
+const obj5 = obj1;
+obj5.altceva = 42;
+obj4.prop1 = 12;
+obj4.arr[0] = 9;
+
+const obj6 = structuredClone(obj1);
+obj6.arr[0] = 14;
+
+console.log(obj1, obj4, obj5, obj6);
+
+// Rest Parameter
+function restParam(a, b, c = 6, ...d) {
+  console.log(a, b, c, d);
+}
+console.clear();
+restParam(1, 2, 3, 4, 5, 6);
+
+// spread an array as arguments for a function call
+restParam(...obj3.arr);
+
+// Object and Array Destructuring
+const arr2 = [1, 2, 3];
+console.log(obj1);
+
+const [, , trei] = arr2;
+const { arr: myArr, prop1, paul = 'implicit' } = obj1;
+
+console.log({ trei, myArr, prop1, paul });
+
+function destruct({ altceva, prop1 = 'implicit', paul = 'implicit' }) {
+  console.log(altceva, prop1, paul);
+}
+
+destruct(obj1);
+
+// Shorthand condtional statements
+const something = true || 'test';
+console.log(something);
+
+const variabila = arr && 'dsasdsadas';
+
+function nullishCoalescing(a) {
+  const unu = a ?? 2;
+  return unu * 2;
+}
+
+console.log(nullishCoalescing(null));
+
+//Elvis operator, optional chaining
+console.log(obj1.arr.length?.toFixed(2));
