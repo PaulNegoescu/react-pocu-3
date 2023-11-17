@@ -1,0 +1,8 @@
+.todoItem label:has(> input:checked) {
+  text-decoration: line-through;
+}
+
+/* <li><input><label></label></li> */
+.todoItem input:checked + label {
+  text-decoration: line-through;
+}

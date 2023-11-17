@@ -1,10 +1,12 @@
 import { Counter } from '../features/Counter/Counter';
+import { Todos } from '../features/Todos/Todos';
 
 export function App() {
   return (
     <>
-      <Counter />
-      <Counter initialValue={3} largeStep={10} smallStep={2} />
+      <Todos />
+      {/* <Counter />
+      <Counter initialValue={3} largeStep={10} smallStep={2} /> */}
     </>
   );
 }
