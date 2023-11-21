@@ -1,61 +1,49 @@
-import { useRef, useState } from 'react';
-import styles from './Todos.module.css';
+import { useEffect, useRef, useState } from 'react';
+import { TodoItem } from './TodoItem';
 
-const todoList = [
-  { id: 1, title: 'Buy milk', completed: true },
-  { id: 2, title: 'Go to work', completed: false },
-  { id: 3, title: 'Enjoy Weekend', completed: false },
-  { id: 4, title: 'Sleep', completed: false },
-];
-
-// const propName = 'firstName';
-// const o = {
-//   prop: 'clasic',
-//   todoList,
-//   [propName]: 'valaoare'
-// };
-// o[propName] = 'valoare';
+function sortTodos(todoA, todoB) {
+  if (todoA.completed === todoB.completed) {
+    return 0;
+  } else if (todoA.completed && !todoB.completed) {
+    return -1;
+  }
+  return 1;
+}
 
 export function Todos() {
-  const [todos, setTodos] = useState(todoList);
+  const [todos, setTodos] = useState(null);
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
-
   const titleRef = useRef();
 
-  // Classical Javascript Way
-  function handleSubmitJs(e) {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const todoTitle = data.get('title');
-    if (
-      todos.some((todo) => todo.title.toLowerCase() === todoTitle.toLowerCase())
-    ) {
-      setError('That todo already exists.');
-      return;
+  useEffect(() => {
+    async function getTodos() {
+      const data = await fetch('http://localhost:3000/todos').then((res) =>
+        res.json()
+      );
+      setTodos(data);
     }
-    const newTodo = {
-      id: todos.length + 1,
-      title: todoTitle,
-      completed: false,
-    };
+    getTodos();
+  }, []);
 
-    setTodos([...todos, newTodo]);
-    titleRef.current.focus();
-    titleRef.current.value = '';
-  }
-
-  // The controlled input way
-  function handleSubmitReact(e) {
+  async function handleAddTodo(e) {
     e.preventDefault();
 
     const newTodo = {
-      id: todos.length + 1,
+      userId: 1,
       title,
       completed: false,
     };
 
-    setTodos([...todos, newTodo]);
+    const todo = await fetch('http://localhost:3000/todos', {
+      method: 'POST',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(newTodo),
+    }).then((res) => res.json());
+
+    setTodos([...todos, todo]);
     titleRef.current.focus();
     setTitle('');
   }
@@ -72,24 +60,34 @@ export function Todos() {
     setTitle(todoTitle);
   }
 
-  function updateCompleted(todo) {
-    const newTodos = todos.map((t) => {
-      if (t === todo) {
-        return { ...t, completed: !t.completed };
-      }
-      return t;
+  async function updateCompleted(todo) {
+    todo.completed = !todo.completed;
+    await fetch(`http://localhost:3000/todos/${todo.id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify(todo),
     });
-    setTodos(newTodos);
+    setTodos([...todos]);
+  }
 
-    // todo.completed = !todo.completed;
-    // setTodos([...todos]);
+  async function handleDeleteAll() {
+    const promises = todos
+      .filter((todo) => todo.completed)
+      .map((todo) =>
+        fetch(`http://localhost:3000/todos/${todo.id}`, { method: 'DELETE' })
+      );
+
+    await Promise.all(promises);
+
+    setTodos(todos.filter((todo) => !todo.completed));
   }
 
   return (
     <>
       <h1>Todos</h1>
-      {title}
-      <form onSubmit={handleSubmitReact}>
+      <form onSubmit={handleAddTodo}>
         <label htmlFor="title">What do you want to do?</label>
         <input
           type="text"
@@ -103,19 +101,13 @@ export function Todos() {
         <p>{error}</p>
       </form>
       <ul>
-        {todos.map((todo) => (
-          <li key={todo.id} className={styles.todoItem}>
-            <label>
-              <input
-                type="checkbox"
-                checked={todo.completed}
-                onChange={() => updateCompleted(todo)}
-              />
-              {todo.title}
-            </label>
-          </li>
+        {todos?.toSorted(sortTodos).map((todo) => (
+          <TodoItem key={todo.id} todo={todo} onUpdate={updateCompleted} />
         ))}
       </ul>
+      <button type="button" onClick={handleDeleteAll}>
+        Delete all completed
+      </button>
     </>
   );
 }

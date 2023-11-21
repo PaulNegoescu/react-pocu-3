@@ -8,5 +8,30 @@
       "lastName": "Negoescu"
     }
   ],
-  "products": []
+  "todos": [
+    {
+      "id": 4,
+      "userId": 1,
+      "title": "Sleep",
+      "completed": true
+    },
+    {
+      "userId": 1,
+      "title": "Buy milk",
+      "completed": false,
+      "id": 5
+    },
+    {
+      "userId": 1,
+      "title": "Visit grandma",
+      "completed": false,
+      "id": 6
+    },
+    {
+      "userId": 1,
+      "title": "Buy Christmas gifts",
+      "completed": true,
+      "id": 7
+    }
+  ]
 }
