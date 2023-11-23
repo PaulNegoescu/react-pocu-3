@@ -54,4 +54,10 @@ body {
   border: 1px solid var(--primary-dark);
   border-radius: 3px;
   color: var(--text-on-dark);
+  cursor: pointer;
+
+  &:disabled {
+    background-color: color-mix(in srgb, var(--primary) 40%, white 60%);
+    cursor: not-allowed;
+  }
 }

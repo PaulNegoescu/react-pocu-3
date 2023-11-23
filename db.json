@@ -1,11 +1,18 @@
 {
   "users": [
     {
-      "id": 1,
       "email": "p@p.com",
-      "password": "parola",
+      "password": "$2a$10$pVXhgNqe2HEQom8rBiNwq.2OYT69CEIZP9sgGBPcfENHIBNHPpT32",
       "firstName": "Paul",
-      "lastName": "Negoescu"
+      "lastName": "Negoescu",
+      "id": 1
+    },
+    {
+      "email": "a@a.com",
+      "password": "$2a$10$l.ErmfRp81rajq.mR11QRO/IxV.Lv9sOrgITLwOYBi2exILdQ8xM2",
+      "firstName": "Paul",
+      "lastName": "Negoescu",
+      "id": 2
     }
   ],
   "todos": [
