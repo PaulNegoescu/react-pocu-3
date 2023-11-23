@@ -13,6 +13,13 @@
       "firstName": "Paul",
       "lastName": "Negoescu",
       "id": 2
+    },
+    {
+      "email": "p@pdsad.com",
+      "password": "$2a$10$KmklQ75o5EXV8g90IqZ6We4kjNft.JcDR034e4c/Fuzqp4bxk23Ea",
+      "firstName": "Paul",
+      "lastName": "Negoescu",
+      "id": 3
     }
   ],
   "todos": [

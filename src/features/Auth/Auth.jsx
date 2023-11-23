@@ -1,123 +1,118 @@
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { object, ref, string } from 'yup';
+import { useLocation } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
+
+const commonSchema = {
+  email: string()
+    .email('The email address is not valid')
+    .required('Please provide an email address'),
+  password: string()
+    .required('Please type a password')
+    .min(4, 'The password needs to be at least 4 characters long'),
+};
+
+const loginSchema = object(commonSchema);
+
+const registerSchema = object({
+  ...commonSchema,
+  retypePassword: string()
+    .required('Please type your password again.')
+    .oneOf([ref('password')], 'The two passwords do not match'),
+  firstName: string().required('Please tell us your first name'),
+  lastName: string().required('Please tell us your last name'),
+});
 
 export function Auth() {
-  const [values, setValues] = useState({
-    email: '',
-    password: '',
-    retypePassword: '',
-    firstName: '',
-    lastName: '',
-  });
-  const [errors, setErrors] = useState({
-    email: '',
-    password: '',
-    retypePassword: '',
-    firstName: '',
-    lastName: '',
-  });
-
-  function handleInputChange(e) {
-    // const newValues = { ...values };
-    // newValues[e.target.name] = e.target.value;
-    // setValues(newValues);
-    setValues({ ...values, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: '' });
+  const { pathname } = useLocation();
+  let isRegister = false;
+  if (pathname === '/register') {
+    isRegister = true;
   }
 
-  async function handleSubmit(e) {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(isRegister ? registerSchema : loginSchema),
+  });
 
+  async function onSubmit(values) {
     // const dataForServer = {...values};
     // delete dataForServer.retypePassword;
     const { retypePassword, ...dataForServer } = values;
 
-    const newErrors = { ...errors };
-    let hasErrors = false;
-    // if(isEmail(values.email)) {
-    //   newErrors.email = 'Please provide a valid email address.';
-    // }
-    if (values.email.trim() === '') {
-      hasErrors = true;
-      newErrors.email = 'The email address is required.';
-    }
-    if (values.password !== values.retypePassword) {
-      hasErrors = true;
-      newErrors.retypePassword = 'The passwords do not match.';
-    }
+    const data = await fetch(
+      `http://localhost:3000/${isRegister ? 'register' : 'login'}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify(dataForServer),
+      }
+    ).then(async (res) => {
+      const data = res.json();
+      // if (res.status >= 400 && res.status < 500) {
+      //   const message = await data;
+      //   toast.error(message);
+      // }
+      return data;
+    });
 
-    if (hasErrors) {
-      setErrors(newErrors);
+    if (!data.accessToken) {
+      toast.error(data);
       return;
     }
 
-    const data = await fetch('http://localhost:3000/register', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-      },
-      body: JSON.stringify(dataForServer),
-    }).then((res) => res.json());
+    toast.success('You have logged in successfully.');
     console.log(data);
   }
 
   return (
     <>
-      <h1>Register</h1>
-      <form className="brandForm" onSubmit={handleSubmit}>
+      <h1>{isRegister ? 'Register' : 'Login'}</h1>
+      <form className="brandForm" noValidate onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          value={values.email}
-          onChange={handleInputChange}
-        />
-        {errors.email && <p className="secondColumn">{errors.email}</p>}
+        <input type="email" id="email" {...register('email')} />
+        {errors.email && <p className="secondColumn">{errors.email.message}</p>}
 
         <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          value={values.password}
-          onChange={handleInputChange}
-        />
-        {errors.password && <p className="secondColumn">{errors.password}</p>}
-
-        <label htmlFor="retypePassword">Retype Password</label>
-        <input
-          type="password"
-          name="retypePassword"
-          id="retypePassword"
-          value={values.retypePassword}
-          onChange={handleInputChange}
-        />
-        {errors.retypePassword && (
-          <p className="secondColumn">{errors.retypePassword}</p>
+        <PasswordInput name="password" {...register('password')} />
+        {errors.password && (
+          <p className="secondColumn">{errors.password.message}</p>
         )}
 
-        <label htmlFor="firstName">First Name</label>
-        <input
-          type="text"
-          name="firstName"
-          id="firstName"
-          value={values.firstName}
-          onChange={handleInputChange}
-        />
-        {errors.firstName && <p className="secondColumn">{errors.firstName}</p>}
+        {isRegister && (
+          <>
+            <label htmlFor="retypePassword">Retype Password</label>
+            <PasswordInput
+              name="retypePassword"
+              {...register('retypePassword')}
+            />
+            {errors.retypePassword && (
+              <p className="secondColumn">{errors.retypePassword.message}</p>
+            )}
 
-        <label htmlFor="lastName">Last Name</label>
-        <input
-          type="text"
-          name="lastName"
-          id="lastName"
-          value={values.lastName}
-          onChange={handleInputChange}
-        />
-        {errors.lastName && <p className="secondColumn">{errors.lastName}</p>}
+            <label htmlFor="firstName">First Name</label>
+            <input type="text" id="firstName" {...register('firstName')} />
+            {errors.firstName && (
+              <p className="secondColumn">{errors.firstName.message}</p>
+            )}
+
+            <label htmlFor="lastName">Last Name</label>
+            <input type="text" id="lastName" {...register('lastName')} />
+            {errors.lastName && (
+              <p className="secondColumn">{errors.lastName.message}</p>
+            )}
+          </>
+        )}
 
         <button type="submit" className="secondColumn btn">
-          Register
+          {isRegister ? 'Register' : 'Login'}
         </button>
       </form>
     </>
