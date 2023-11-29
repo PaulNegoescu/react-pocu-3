@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { TodoItem } from './TodoItem';
+import { useAuthContext } from '../Auth/AuthContext';
 
 function sortTodos(todoA, todoB) {
   if (todoA.completed === todoB.completed) {
@@ -15,12 +16,18 @@ export function Todos() {
   const [error, setError] = useState('');
   const [title, setTitle] = useState('');
   const titleRef = useRef();
+  const { accessToken, user } = useAuthContext();
 
   useEffect(() => {
     async function getTodos() {
-      const data = await fetch('http://localhost:3000/todos').then((res) =>
-        res.json()
-      );
+      const data = await fetch(
+        `http://localhost:3000/todos?userId=${user.id}`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        }
+      ).then((res) => res.json());
       setTodos(data);
     }
     getTodos();
@@ -30,7 +37,7 @@ export function Todos() {
     e.preventDefault();
 
     const newTodo = {
-      userId: 1,
+      userId: user.id,
       title,
       completed: false,
     };
@@ -39,6 +46,7 @@ export function Todos() {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(newTodo),
     }).then((res) => res.json());
@@ -66,6 +74,7 @@ export function Todos() {
       method: 'PUT',
       headers: {
         'Content-type': 'application/json',
+        Authorization: `Bearer ${accessToken}`,
       },
       body: JSON.stringify(todo),
     });
@@ -76,12 +85,21 @@ export function Todos() {
     const promises = todos
       .filter((todo) => todo.completed)
       .map((todo) =>
-        fetch(`http://localhost:3000/todos/${todo.id}`, { method: 'DELETE' })
+        fetch(`http://localhost:3000/todos/${todo.id}`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        })
       );
 
     await Promise.all(promises);
 
     setTodos(todos.filter((todo) => !todo.completed));
+  }
+
+  if (typeof todos !== 'object') {
+    return 'Please login and try again.';
   }
 
   return (

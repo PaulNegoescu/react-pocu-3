@@ -4,6 +4,7 @@ import { object, ref, string } from 'yup';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
+import { useAuthContext } from './AuthContext';
 
 const commonSchema = {
   email: string()
@@ -40,6 +41,8 @@ export function Auth() {
     resolver: yupResolver(isRegister ? registerSchema : loginSchema),
   });
 
+  const { login } = useAuthContext();
+
   async function onSubmit(values) {
     // const dataForServer = {...values};
     // delete dataForServer.retypePassword;
@@ -69,7 +72,7 @@ export function Auth() {
     }
 
     toast.success('You have logged in successfully.');
-    console.log(data);
+    login(data);
   }
 
   return (
@@ -78,12 +81,14 @@ export function Auth() {
       <form className="brandForm" noValidate onSubmit={handleSubmit(onSubmit)}>
         <label htmlFor="email">Email</label>
         <input type="email" id="email" {...register('email')} />
-        {errors.email && <p className="secondColumn">{errors.email.message}</p>}
+        {errors.email && (
+          <p className="secondColumn fieldError">{errors.email.message}</p>
+        )}
 
         <label htmlFor="password">Password</label>
         <PasswordInput name="password" {...register('password')} />
         {errors.password && (
-          <p className="secondColumn">{errors.password.message}</p>
+          <p className="secondColumn fieldError">{errors.password.message}</p>
         )}
 
         {isRegister && (
@@ -94,19 +99,25 @@ export function Auth() {
               {...register('retypePassword')}
             />
             {errors.retypePassword && (
-              <p className="secondColumn">{errors.retypePassword.message}</p>
+              <p className="secondColumn fieldError">
+                {errors.retypePassword.message}
+              </p>
             )}
 
             <label htmlFor="firstName">First Name</label>
             <input type="text" id="firstName" {...register('firstName')} />
             {errors.firstName && (
-              <p className="secondColumn">{errors.firstName.message}</p>
+              <p className="secondColumn fieldError">
+                {errors.firstName.message}
+              </p>
             )}
 
             <label htmlFor="lastName">Last Name</label>
             <input type="text" id="lastName" {...register('lastName')} />
             {errors.lastName && (
-              <p className="secondColumn">{errors.lastName.message}</p>
+              <p className="secondColumn fieldError">
+                {errors.lastName.message}
+              </p>
             )}
           </>
         )}
