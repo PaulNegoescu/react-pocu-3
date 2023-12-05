@@ -10,6 +10,7 @@ import { AuthContextProvider } from '../features/Auth/AuthContext';
 
 import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
+import { RequireAuth } from '../features/Auth/RequireAuth';
 
 export function App() {
   return (
@@ -18,7 +19,14 @@ export function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<h1>Home</h1>} />
-          <Route path="todos" element={<Todos />} />
+          <Route
+            path="todos"
+            element={
+              <RequireAuth>
+                <Todos />
+              </RequireAuth>
+            }
+          />
           <Route path="comm" element={<Parent />} />
           <Route
             path="counter"

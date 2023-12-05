@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { TodoItem } from './TodoItem';
 import { useAuthContext } from '../Auth/AuthContext';
+import { useApi } from '../../hooks/useApi';
 
 function sortTodos(todoA, todoB) {
   if (todoA.completed === todoB.completed) {
@@ -17,21 +18,15 @@ export function Todos() {
   const [title, setTitle] = useState('');
   const titleRef = useRef();
   const { accessToken, user } = useAuthContext();
+  const { get, post, patch, remove } = useApi('todos');
 
   useEffect(() => {
     async function getTodos() {
-      const data = await fetch(
-        `http://localhost:3000/todos?userId=${user.id}`,
-        {
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        }
-      ).then((res) => res.json());
+      const data = await get({ userId: user?.id }, { accessToken });
       setTodos(data);
     }
     getTodos();
-  }, []);
+  }, [accessToken, user, get]);
 
   async function handleAddTodo(e) {
     e.preventDefault();
@@ -42,14 +37,7 @@ export function Todos() {
       completed: false,
     };
 
-    const todo = await fetch('http://localhost:3000/todos', {
-      method: 'POST',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(newTodo),
-    }).then((res) => res.json());
+    const todo = await post(newTodo, { accessToken });
 
     setTodos([...todos, todo]);
     titleRef.current.focus();
@@ -70,28 +58,14 @@ export function Todos() {
 
   async function updateCompleted(todo) {
     todo.completed = !todo.completed;
-    await fetch(`http://localhost:3000/todos/${todo.id}`, {
-      method: 'PUT',
-      headers: {
-        'Content-type': 'application/json',
-        Authorization: `Bearer ${accessToken}`,
-      },
-      body: JSON.stringify(todo),
-    });
+    await patch(todo.id, todo, { accessToken });
     setTodos([...todos]);
   }
 
   async function handleDeleteAll() {
     const promises = todos
       .filter((todo) => todo.completed)
-      .map((todo) =>
-        fetch(`http://localhost:3000/todos/${todo.id}`, {
-          method: 'DELETE',
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-        })
-      );
+      .map((todo) => remove(todo.id, { accessToken }));
 
     await Promise.all(promises);
 
@@ -119,9 +93,12 @@ export function Todos() {
         <p>{error}</p>
       </form>
       <ul>
-        {todos?.toSorted(sortTodos).map((todo) => (
-          <TodoItem key={todo.id} todo={todo} onUpdate={updateCompleted} />
-        ))}
+        {todos &&
+          todos
+            .toSorted(sortTodos)
+            .map((todo) => (
+              <TodoItem key={todo.id} todo={todo} onUpdate={updateCompleted} />
+            ))}
       </ul>
       <button type="button" onClick={handleDeleteAll}>
         Delete all completed

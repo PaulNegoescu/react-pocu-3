@@ -1,7 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { object, ref, string } from 'yup';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
 import { useAuthContext } from './AuthContext';
@@ -27,7 +27,8 @@ const registerSchema = object({
 });
 
 export function Auth() {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
+  const navigate = useNavigate();
   let isRegister = false;
   if (pathname === '/register') {
     isRegister = true;
@@ -73,6 +74,10 @@ export function Auth() {
 
     toast.success('You have logged in successfully.');
     login(data);
+
+    const path = state.from ?? '/';
+    console.log(state);
+    navigate(path);
   }
 
   return (
