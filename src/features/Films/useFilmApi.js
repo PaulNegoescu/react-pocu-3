@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useApi } from '../../hooks/useApi';
+import { useAuthContext } from '../Auth/AuthContext';
 
 const relatedEntities = {
   characters: [],
@@ -11,11 +12,12 @@ const relatedEntities = {
 
 const getRelated = structuredClone(relatedEntities);
 
-export function useFilmApi(id) {
+export function useFilmApi(id, shouldRequestOnLoad = true) {
   const [data, setData] = useState(null);
   const [related, setRelated] = useState(structuredClone(relatedEntities));
+  const { accessToken } = useAuthContext();
 
-  const { get: getFilms } = useApi('films');
+  const { get: getFilms, remove, post } = useApi('films');
   ({ get: getRelated.characters } = useApi('characters'));
   ({ get: getRelated.planets } = useApi('planets'));
   ({ get: getRelated.starships } = useApi('starships'));
@@ -44,8 +46,17 @@ export function useFilmApi(id) {
       }
     }
 
-    getData();
-  }, [id, getFilms]);
+    if (shouldRequestOnLoad) {
+      getData();
+    }
+  }, [id, getFilms, shouldRequestOnLoad]);
 
-  return [data, related];
+  function deleteFilm() {
+    return remove(id, { accessToken });
+  }
+
+  function addFilm(body) {
+    return post(body, { accessToken });
+  }
+  return { data, related, deleteFilm, addFilm };
 }

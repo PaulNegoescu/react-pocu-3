@@ -3,7 +3,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { object, ref, string } from 'yup';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { PasswordInput } from '../../components/PasswordInput/PasswordInput';
+import { PasswordInput } from '@/components/PasswordInput/PasswordInput';
 import { useAuthContext } from './AuthContext';
 
 const commonSchema = {
@@ -75,7 +75,7 @@ export function Auth() {
     toast.success('You have logged in successfully.');
     login(data);
 
-    const path = state.from ?? '/';
+    const path = state?.from ?? '/';
     navigate(path);
   }
 

@@ -32,7 +32,7 @@
     {
       "userId": 1,
       "title": "Buy milk",
-      "completed": false,
+      "completed": true,
       "id": 5
     },
     {
@@ -49,64 +49,6 @@
     }
   ],
   "films": [
-    {
-      "title": "A New Hope",
-      "episode_id": 4,
-      "opening_crawl": "It is a period of civil war.\r\nRebel spaceships, striking\r\nfrom a hidden base, have won\r\ntheir first victory against\r\nthe evil Galactic Empire.\r\n\r\nDuring the battle, Rebel\r\nspies managed to steal secret\r\nplans to the Empire's\r\nultimate weapon, the DEATH\r\nSTAR, an armored space\r\nstation with enough power\r\nto destroy an entire planet.\r\n\r\nPursued by the Empire's\r\nsinister agents, Princess\r\nLeia races home aboard her\r\nstarship, custodian of the\r\nstolen plans that can save her\r\npeople and restore\r\nfreedom to the galaxy....",
-      "director": "George Lucas",
-      "poster": "https://m.media-amazon.com/images/M/MV5BOGIzZTQ3MmUtNjJiMS00Mjc1LWE3NzktODljOGY2N2Q5MWMyXkEyXkFqcGdeQXVyNjkzNDY2NzA@._V1_.jpg",
-      "producer": "Gary Kurtz, Rick McCallum",
-      "release_date": "1977-05-25",
-      "characters": [
-        1,
-        2,
-        3,
-        4,
-        5,
-        6,
-        7,
-        8,
-        9,
-        10,
-        12,
-        13,
-        14,
-        15,
-        16,
-        18,
-        19,
-        81
-      ],
-      "planets": [
-        1,
-        2,
-        3
-      ],
-      "starships": [
-        2,
-        3,
-        5,
-        9,
-        10,
-        11,
-        12,
-        13
-      ],
-      "vehicles": [
-        4,
-        6,
-        7,
-        8
-      ],
-      "species": [
-        1,
-        2,
-        3,
-        4,
-        5
-      ],
-      "id": 1
-    },
     {
       "title": "The Empire Strikes Back",
       "episode_id": 5,
@@ -240,95 +182,6 @@
         15
       ],
       "id": 3
-    },
-    {
-      "title": "The Phantom Menace",
-      "episode_id": 1,
-      "opening_crawl": "Turmoil has engulfed the\r\nGalactic Republic. The taxation\r\nof trade routes to outlying star\r\nsystems is in dispute.\r\n\r\nHoping to resolve the matter\r\nwith a blockade of deadly\r\nbattleships, the greedy Trade\r\nFederation has stopped all\r\nshipping to the small planet\r\nof Naboo.\r\n\r\nWhile the Congress of the\r\nRepublic endlessly debates\r\nthis alarming chain of events,\r\nthe Supreme Chancellor has\r\nsecretly dispatched two Jedi\r\nKnights, the guardians of\r\npeace and justice in the\r\ngalaxy, to settle the conflict....",
-      "director": "George Lucas",
-      "poster": "https://m.media-amazon.com/images/M/MV5BMjA2NzQ3NjE4M15BMl5BanBnXkFtZTgwNTE5OTcyNDM@._V1_.jpg",
-      "producer": "Rick McCallum",
-      "release_date": "1999-05-19",
-      "characters": [
-        2,
-        3,
-        10,
-        11,
-        16,
-        20,
-        21,
-        32,
-        33,
-        34,
-        35,
-        36,
-        37,
-        38,
-        39,
-        40,
-        41,
-        42,
-        43,
-        44,
-        46,
-        47,
-        48,
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55,
-        56,
-        57,
-        58,
-        59
-      ],
-      "planets": [
-        1,
-        8,
-        9
-      ],
-      "starships": [
-        31,
-        32,
-        39,
-        40,
-        41
-      ],
-      "vehicles": [
-        33,
-        34,
-        35,
-        36,
-        37,
-        38,
-        42
-      ],
-      "species": [
-        1,
-        2,
-        6,
-        11,
-        12,
-        13,
-        14,
-        15,
-        16,
-        17,
-        18,
-        19,
-        20,
-        21,
-        22,
-        23,
-        24,
-        25,
-        26,
-        27
-      ],
-      "id": 4
     },
     {
       "title": "Revenge of the Sith",
@@ -540,6 +393,35 @@
         35
       ],
       "id": 6
+    },
+    {
+      "release_date": "2023-11-28T22:00:00.000Z",
+      "producer": "asdawewq",
+      "poster": "https://1.bp.blogspot.com/-TAuRf-x2Fu0/Vth3xcoyTYI/AAAAAAAAJ5Y/Tbe7qUMxRE4/s1600/bigstock-Star-Wars-113219102.jpg",
+      "director": "SADAS",
+      "opening_crawl": "sadasd",
+      "episode_id": 3,
+      "title": "Test",
+      "id": 7
+    },
+    {
+      "characters": [
+        1,
+        4,
+        14,
+        38,
+        56,
+        63,
+        67
+      ],
+      "release_date": "2023-12-14T22:00:00.000Z",
+      "producer": "asdasd",
+      "poster": "https://1.bp.blogspot.com/-TAuRf-x2Fu0/Vth3xcoyTYI/AAAAAAAAJ5Y/Tbe7qUMxRE4/s1600/bigstock-Star-Wars-113219102.jpg",
+      "director": "asdasdd",
+      "opening_crawl": "dasdasd",
+      "episode_id": 3424,
+      "title": "sadasdasd",
+      "id": 8
     }
   ],
   "planets": [

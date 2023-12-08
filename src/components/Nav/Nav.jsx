@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import clsx from 'clsx';
 
 import styles from './Nav.module.css';
-import { useAuthContext } from '../../features/Auth/AuthContext';
+import { useAuthContext } from '@/features/Auth/AuthContext';
 
 function BrandNavLink({ children, ...props }) {
   return (
