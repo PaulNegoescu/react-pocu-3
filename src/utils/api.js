@@ -33,7 +33,7 @@ const commonHeaders = {
 };
 
 export function getApi(resource) {
-  function post(body, options) {
+  function post(body, options = {}) {
     options.body = JSON.stringify(body);
     options.headers = {
       ...options.headers,
@@ -45,7 +45,7 @@ export function getApi(resource) {
     return fetch(`${apiUrl}/${resource}`, options).then(handleServerResponse);
   }
 
-  function get(search = null, options) {
+  function get(search = null, id = null, options = {}) {
     let searchStr = '';
     if (search) {
       searchStr = '?';
@@ -57,14 +57,16 @@ export function getApi(resource) {
       ...getAuthHeader(options.accessToken),
     };
 
+    id = id !== null && id !== undefined ? `/${id}` : '';
+
     delete options.accessToken;
 
-    return fetch(`${apiUrl}/${resource}${searchStr}`, options).then(
+    return fetch(`${apiUrl}/${resource}${id}${searchStr}`, options).then(
       handleServerResponse
     );
   }
 
-  function patch(id, body, options) {
+  function patch(id, body, options = {}) {
     options.body = JSON.stringify(body);
     options.headers = {
       ...options.headers,
@@ -78,7 +80,7 @@ export function getApi(resource) {
     );
   }
 
-  function remove(id, options) {
+  function remove(id, options = {}) {
     options.method = 'DELETE';
     options.headers = {
       ...options.headers,

@@ -76,7 +76,6 @@ export function Auth() {
     login(data);
 
     const path = state.from ?? '/';
-    console.log(state);
     navigate(path);
   }
 

@@ -22,7 +22,7 @@ export function Todos() {
 
   useEffect(() => {
     async function getTodos() {
-      const data = await get({ userId: user?.id }, { accessToken });
+      const data = await get({ userId: user?.id }, null, { accessToken });
       setTodos(data);
     }
     getTodos();

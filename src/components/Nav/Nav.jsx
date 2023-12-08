@@ -29,9 +29,17 @@ export function Nav() {
         <li>
           <BrandNavLink to="counter">Counter</BrandNavLink>
         </li>
+
+        {user && (
+          <li>
+            <BrandNavLink to="todos">Todos</BrandNavLink>
+          </li>
+        )}
+
         <li>
-          <BrandNavLink to="todos">Todos</BrandNavLink>
+          <BrandNavLink to="films">Films</BrandNavLink>
         </li>
+
         <li>
           <BrandNavLink to="comm">Communication</BrandNavLink>
         </li>

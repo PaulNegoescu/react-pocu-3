@@ -11,7 +11,9 @@ async function makeRequest(apiFunc, logout, navigate, pathname, args) {
     if (e instanceof UnauthorizedError) {
       logout();
       navigate('/login', { state: { from: pathname } });
+      return;
     }
+    console.warn(e);
   }
 
   return result;

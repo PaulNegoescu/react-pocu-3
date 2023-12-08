@@ -11,6 +11,8 @@ import { AuthContextProvider } from '../features/Auth/AuthContext';
 import 'react-toastify/dist/ReactToastify.min.css';
 import './App.css';
 import { RequireAuth } from '../features/Auth/RequireAuth';
+import { FilmList } from '../features/Films/FilmList';
+import { FilmDetails } from '../features/Films/FilmDetails';
 
 export function App() {
   return (
@@ -19,6 +21,8 @@ export function App() {
         <Nav />
         <Routes>
           <Route path="/" element={<h1>Home</h1>} />
+          <Route path="films" element={<FilmList />} />
+          <Route path="films/:id" element={<FilmDetails />} />
           <Route
             path="todos"
             element={
