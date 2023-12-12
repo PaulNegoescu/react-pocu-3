@@ -12,7 +12,6 @@ export function FilmList() {
 
   return (
     <section className={styles.list}>
-      <h1>Films</h1>
       {user && (
         <Link className={styles.actionButton} to="add">
           <HiPlusCircle />

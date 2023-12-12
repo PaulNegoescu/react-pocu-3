@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { array, date, number, object, string } from 'yup';
 import { useFilmApi } from './useFilmApi';
 import { Form } from './Form';
+import { useParams } from 'react-router-dom';
 
 const filmSchema = object({
   title: string().required().min(4),
@@ -19,20 +20,45 @@ const filmSchema = object({
   // species: array(number()),
 });
 
-export function AddFilmForm() {
+export function EditFilm() {
+  const { id } = useParams();
+  const { data: film, updateFilm, getFilm } = useFilmApi(id, false);
+  const formOptions = {
+    defaultValues: getFilm,
+    resolver: yupResolver(filmSchema),
+  };
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(filmSchema),
-  });
-  const { addFilm } = useFilmApi(null, false);
+    // setValue,
+  } = useForm(formOptions);
+
+  // useEffect(() => {
+  //   const fieldsToSet = [
+  //     'title',
+  //     'episode_id',
+  //     'opening_crawl',
+  //     'director',
+  //     'poster',
+  //     'producer',
+  //     'release_date',
+  //   ];
+  //   if (film) {
+  //     for (const field of fieldsToSet) {
+  //       setValue(field, film[field]);
+  //     }
+  //   }
+  // }, [film, setValue]);
+
+  if (!film) {
+    return <strong>Loading ...</strong>;
+  }
 
   return (
     <Form
-      submitFn={addFilm}
-      heading="Add a new Film"
+      submitFn={updateFilm}
+      heading={`Editing "${film.title}"`}
       {...{ register, handleSubmit, errors }}
     />
   );

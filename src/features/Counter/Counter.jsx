@@ -36,6 +36,7 @@ export function Counter({ initialValue = 0, largeStep = 5, smallStep = 1 }) {
       <h1>Counter</h1>
       <p>
         <output
+          data-testid="output"
           style={{
             '--font-size': `${1 + count / 10}rem`,
           }}
