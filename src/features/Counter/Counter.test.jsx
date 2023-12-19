@@ -1,11 +1,10 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import '@testing-library/jest-dom';
+import { render, screen } from '@/utils/testUtils';
 import { Counter } from './Counter';
 
-test('The counter works as expected', () => {
-  render(<Counter />);
-  console.log(screen.debug());
+test('The counter works as expected', async () => {
+  const { user } = render(<Counter />);
+  // console.log(screen.debug());
   expect(screen.getByRole('heading')).toHaveTextContent('Counter');
-  fireEvent.click(screen.getByText('-1'));
+  await user.click(screen.getByText('-1'));
   expect(screen.getByTestId('output')).toHaveTextContent('-1');
 });

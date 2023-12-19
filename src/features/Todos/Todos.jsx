@@ -78,7 +78,7 @@ export function Todos() {
 
   return (
     <>
-      <h1>Todos</h1>
+      <h1 className="text-4xl font-bold">Todos</h1>
       <form onSubmit={handleAddTodo}>
         <label htmlFor="title">What do you want to do?</label>
         <input
@@ -88,8 +88,14 @@ export function Todos() {
           ref={titleRef}
           value={title}
           onChange={handleChange}
+          className="border border-gray-800"
         />
-        <button type="submit">Add</button>
+        <button
+          type="submit"
+          className="border border-teal-900 hover:bg-teal-700 hover:text-white bg-teal-500 text-teal-900 py-2 px-4"
+        >
+          Add
+        </button>
         <p>{error}</p>
       </form>
       <ul>

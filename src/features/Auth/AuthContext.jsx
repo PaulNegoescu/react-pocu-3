@@ -8,8 +8,11 @@ const initialAuth = {
 
 const AuthContext = createContext(null);
 
-export function AuthContextProvider({ children }) {
-  const [auth, setAuth] = useLocalStorageState('auth', initialAuth);
+export function AuthContextProvider({ children, initialValue = null }) {
+  const [auth, setAuth] = useLocalStorageState(
+    'auth',
+    initialValue || initialAuth
+  );
 
   const login = useCallback(
     (data) => {

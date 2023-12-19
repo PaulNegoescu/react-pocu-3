@@ -33,26 +33,26 @@ export function Todos() {
   const titleRef = useRef();
 
   // Classical Javascript Way
-  function handleSubmitJs(e) {
-    e.preventDefault();
-    const data = new FormData(e.target);
-    const todoTitle = data.get('title');
-    if (
-      todos.some((todo) => todo.title.toLowerCase() === todoTitle.toLowerCase())
-    ) {
-      setError('That todo already exists.');
-      return;
-    }
-    const newTodo = {
-      id: todos.length + 1,
-      title: todoTitle,
-      completed: false,
-    };
+  // function handleSubmitJs(e) {
+  //   e.preventDefault();
+  //   const data = new FormData(e.target);
+  //   const todoTitle = data.get('title');
+  //   if (
+  //     todos.some((todo) => todo.title.toLowerCase() === todoTitle.toLowerCase())
+  //   ) {
+  //     setError('That todo already exists.');
+  //     return;
+  //   }
+  //   const newTodo = {
+  //     id: todos.length + 1,
+  //     title: todoTitle,
+  //     completed: false,
+  //   };
 
-    setTodos([...todos, newTodo]);
-    titleRef.current.focus();
-    titleRef.current.value = '';
-  }
+  //   setTodos([...todos, newTodo]);
+  //   titleRef.current.focus();
+  //   titleRef.current.value = '';
+  // }
 
   // The controlled input way
   function handleSubmitReact(e) {
